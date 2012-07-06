@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style type="text/css">
+ #case_list {
+ border: 1px solid grey;
+  border-collapse: collapse;
+ }
+ 
+ #case_list th {
+ border-left: 1px solid grey;
+ border-bottom: 2px solid grey;
+ }
+ 
+ #case_list td {
+  border-left: 1px solid grey;
+ }
+</style>
+{% endblock %}
+
+{% block content %}
+ {% if all_cases %}
+  <table id="case_list">
+   <tr><th>Id</th>
+       <th>Patient</th>
+       <th>Medics</th>
+       <th>Status</th>
+       <th>Last update</th>
+   </tr>
+  {% for case in all_cases %}
+   <tr><td><a href="cases/show/{{ case.id_string }}/">{{ case.pk }}</a></td>
+       <td>{{ case.patient.name }}</td>
+       <td>{{ case.medics.all|join:", " }}</td>
+       <td>{{ case.get_status_display }}</td>
+       <td>{{ case.last_updated }}</td>
+   </tr>
+  {% endfor %}
+  </table>
+ {% else %}
+  <p>No cases are available.</p>
+ {% endif %}
+{% endblock %}

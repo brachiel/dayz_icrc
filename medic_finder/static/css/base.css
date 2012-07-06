@@ -1,0 +1,128 @@
+
+.hidden {
+	display: none;
+}
+
+.error {
+	background-color: #732f16;
+}
+
+/*
+Color theme by lejazzman1 @ http://kiler.adobe.com/#themeID/1455626
+#a69958 #bfb084 #261201 #732f16 #8c3a1c
+*/
+
+body {
+	background-color: #261201;
+	font-size: 13px;
+	font-family: Arial, SunSans-Regular, Sans-Serif;
+	color:#a69958;  
+	padding:0 10px;
+	margin:0;
+}
+
+p, pre, h2 {
+	padding:10px;
+	padding-bottom: 0;
+	margin:0;
+}
+
+h1 {
+	font-size: 14px;
+	text-transform:uppercase;
+	text-align: right;
+	color: #8c3a1c;
+	background-color: #732f16;
+	padding:5px 15px;
+	margin:0;
+}
+
+a, a:visited, a:active { 
+	color: #8c3a1c;
+	background-color:transparent;
+	text-decoration: none; 
+}
+
+a:hover {
+	color: #732f16;
+}
+ 
+pre { 
+	color: #dde1ac;
+	font-size: 13px;
+	background-color:transparent;
+	font-family: Courier, Monaco, Monospace;
+}
+
+
+#content {
+	margin-left: 220px;
+	padding: 10px;
+	background-color:#dde1ac;
+	color: #261201;
+	overflow: auto;
+	font-size: medium;
+}
+
+#menu {
+	position: absolute;
+	width: 210px;
+	left: 10px;
+	padding:0;
+	margin:0;
+	background-color: #a69958;
+	color: #261201;
+}
+
+#menu h2 {
+	font-size:16px;
+	padding-top:10px;
+	text-transform:uppercase;
+	color: #8c3a1c;
+	background-color: transparent;
+}	
+
+#menu ul {
+	padding-left: 20px;
+	list-style-type: square;
+}
+
+
+#cc_attribution {
+	margin-left: 220px;
+	padding-left: 0px;
+	font-size: xx-small;
+}
+
+
+
+fieldset {
+	border: 1px solid #a69958;
+}
+
+fieldset legend {
+	font-variant: small-caps;
+}
+
+input, textarea {
+	background-color: #a69958;
+	border: 1px solid #261201;
+	color: #261201;
+}
+
+.image {
+	float: left;
+	padding: 10px 0px 0px 10px;
+	margin: 0 1em 1em 0;
+	background-color: #a69958;
+	border: 1px solid #261201;
+}
+
+.image div {
+	font-size: 70%;
+    text-align: center;
+	padding: 0;
+	margin: 0;
+	width: 90%;
+}
+

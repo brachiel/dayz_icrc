@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript" encoding="utf-8" src="http://www.openlayers.org/api/2.7/OpenLayers.js"></script>
+<script type="text/javascript">
+ var baseMapDataURL = "{{ STATIC_URL }}map/";
+</script>
+<script type="text/javascript" encoding="utf-8" src="{{ STATIC_URL }}js/map.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function() {
+  vectorLayer.setMedicMarker({{ case.longitude }}, {{ case.latitude }}); 	
+ });
+
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+  dl {
+   
+  }
+  
+  dt {
+   background-color: #A69958;
+   float: left;
+   width: 20%;
+   max-width: 150px;
+   padding: 4px 5px;
+   margin-bottom: 2px;
+   margin-right: 2ex;
+  }
+  
+  dd {
+   padding: 4px 0;
+   margin: 5px 0;
+  }
+  
+  #notes {
+   width: 100%;
+   background-color: #261201;
+   color: white;
+  }
+  
+  #map_container {
+   margin-left: 150px;
+   margin-top: 2em; margin-bottom: 2em;
+  }
+  
+  #map { 
+   height: 15em; width: 60%; border: 1px solid black;
+  }
+ 
+  #map .olControlMousePosition {
+   background: #000000; padding: 5px; margin: 0px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+ <dl>
+  <dt>Patient</dt><dd>{{ case.patient.name }}</dd>
+  <dt>Medics</dt><dd>{{ case.medics.all|join:", "|default:"None, yet. Please be patient (hurr)." }} (total of {{ case.medics.count }})</dd>
+  <dt>Created</dt><dd>{{ case.created }}</dd>
+  <dt>Last Modified</dt><dd>{{ case.last_updated|default:"&nbsp;" }}</dd>
+  <dt>Status</dt><dd>{{ case.get_status_display }}</dd>
+  <dt>Position</dt><dd><div id="map_container"><div id="map"></div></div>
+  <dt>Notes</dt>
+  <dd>
+   {% if case.casenote_set.count > 0 %}
+    <table id="notes">
+   {% for note in case.casenote_set.all %}
+     <tr><td>{{ note.author }}</td><td><pre>{{ note.note }}</pre></td></tr>
+     {% if note.new_status %}
+       <tr style="background-color: #8C3A1C"><td>{{ note.author }}</td><td style="font-size: small;">Status changed to {{ note.get_new_status_display }}</td></tr>
+     {% endif %}
+   {% endfor %}
+   </table>
+   {% else %}
+   None, yet.
+   {% endif %}
+  </dd>
+ </dl>
+{% endblock %}

@@ -1,0 +1,10 @@
+This directory is to be filled with tiles for an open layer map.
+The format is as follows:
+
+x/y/z.png
+
+where x is in between 0 and 7,
+y and z are in between 0 and 2^(x-1)
+
+So for level x=7, you need to have 65x65 tiles of the Chenarus map with the greatest zoom level (tiles with the greatest detail).
+

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block sub_title %}- Help Me!{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" encoding="utf-8" src="{{ STATIC_URL }}js/jquery-validate.min.js"></script>
+<script type="text/javascript" encoding="utf-8" src="//www.openlayers.org/api/2.7/OpenLayers.js"></script>
+<script type="text/javascript">
+	var baseMapDataURL = "{{ STATIC_URL }}map/";
+</script>
+<script type="text/javascript" encoding="utf-8" src="{{ STATIC_URL }}js/map.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#new_case_form").validate({
+			rules: {
+				player_name: { required: true },
+				case_description: { required: true, minlength: 30, maxlength: 4000 },
+				latitude: { required: true },
+				longitude: { required: true }
+			},
+			submitHandler: function(form) {
+				form.submit_button.disabled = "disabled";
+
+				form.submit();
+			},
+
+			errorPlacement: function(){} // do not place error messages
+		});
+		
+		$("#map").on("markerset", function(e, lat, lon) {
+		  vectorLayer.setMedicMarker(lon, lat);
+			  
+		  $("#id_latitude").val(lat);
+		  $("#id_longitude").val(lon);
+		});
+	});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style type="text/css">
+	#id_case_description { 
+		width: 100%; height: 15em; 
+	}
+
+	#map { 
+		height: 30em; width: 100%; border: none; 
+	}
+ 
+	#map .olControlMousePosition {
+		background: #000000; padding: 5px; margin: 0px;
+	}
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form id="new_case_form" action="/medic_finder/cases/new/" method="post">
+	<fieldset>
+	{% csrf_token %}
+	<dl>
+		<dt><label for="player_name">In-game survivor name.</label></dt>
+		<dd>{{ form.player_name }}<br />
+			Please spell your name correctly, as we will reuse your name in case you ever come back.</dd>
+
+		<dt><label for="case_description">Case description</label></dt>
+		<dd>{{ form.case_description }}</dd>
+
+		<dt><label for="map">Mark your position</label></dt>
+		<dd><div id="map"></div>
+            {{ form.latitude }}{{ form.longitude }}</dd>
+	</dl>
+	<input type="submit" name="submit_button" id="submit_button" value="Help me!" />
+	</fieldset>
+</form>
+
+{% endblock %}

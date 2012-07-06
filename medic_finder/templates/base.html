@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <base href="/medic_finder/" />
+	{% block extra_meta %}{% endblock %}
+
+	<title>{% block title %}DayZ ICRC{% endblock %}{% block sub_title %}{% endblock %}</title>
+	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/base.css" media="screen" />
+	{% block extra_css %}{% endblock %}
+
+	<script type="text/javascript" encoding="urf-8" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" encoding="urf-8" src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+	{% block extra_js %}{% endblock %}
+</head>
+<body>
+	<p align="right"><img src="{{ STATIC_URL }}img/tr_logo.png" alt="DayZ ICRC" /></p>
+	<h1>DayZ ICRC - {{ punchline|default:"Because a life expectancy of 30 minutes is just not enough." }}</h1>
+	<div id="menu">
+		{% block menu %}
+		<h2><a href="./">DayZ ICRC Interface</a></h2>
+
+		{% if username %}<p style="font-size: small">You're logged in as {{ username }}.</p>{% endif %}
+
+		<ul><li><a href="cases/new/">Ask for help</a>.</li>
+			{% if username %}<li><a href="logout/">Logout</a>.</li>{% endif %}
+		</ul>
+		{% endblock menu %}
+		{% block extra_menu %}{% endblock extra_menu %}
+	</div>
+	{% block panels %}
+	{% endblock %}
+
+	<div id="content">
+		{% block content %}
+		Welcome {{ username }}.
+		{% endblock %}
+	</div>
+
+	<div id="cc_attribution" align="right">This is a design adaptation of a design found at <a href="http://www.intensivstation.ch/files/en_templates/temp02.html">www.intensivstation.ch</a>, available under a Creative Commons Attribution 1.0 Generic (CC BY 1.0) license. Copyright © <a href="http://www.monorom.to">monorom.to</a>.</div>
+	</body>
+</html>
+
