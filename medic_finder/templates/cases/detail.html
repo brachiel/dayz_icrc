@@ -22,7 +22,6 @@
   }
   
   dt {
-   background-color: #A69958;
    float: left;
    width: 20%;
    max-width: 150px;
@@ -36,9 +35,8 @@
    margin: 5px 0;
   }
   
-  #notes {
+  .notes {
    width: 100%;
-   background-color: #261201;
    color: white;
   }
   
@@ -58,22 +56,29 @@
 {% endblock %}
 
 {% block content %}
- <dl>
+ <dl class="detail_block">
+  <dt>Status</dt><dd>{{ case.get_status_display }}</dd>
   <dt>Patient</dt><dd>{{ case.patient.name }}</dd>
   <dt>Medics</dt><dd>{{ case.medics.all|join:", "|default:"None, yet. Please be patient (hurr)." }} (total of {{ case.medics.count }})</dd>
   <dt>Created</dt><dd>{{ case.created }}</dd>
   <dt>Last Modified</dt><dd>{{ case.last_updated|default:"&nbsp;" }}</dd>
-  <dt>Status</dt><dd>{{ case.get_status_display }}</dd>
+  <dt>Timezone</dt><dd>{{ case.get_timezone_display }}</dd>
+  <dt>Available hours</dt><dd>
+   <ul>{% for time in case.meeting_times.all %}
+    {% ifchanged %}{{ time.span_from|date:"D" }}: {% endifchanged %}{{ time.span_from|date:"G" }} 
+   {% endfor %}</ul>
   <dt>Position</dt><dd><div id="map_container"><div id="map"></div></div>
   <dt>Notes</dt>
   <dd>
    {% if case.casenote_set.count > 0 %}
-    <table id="notes">
-   {% for note in case.casenote_set.all %}
-     <tr><td>{{ note.author }}</td><td><pre>{{ note.note }}</pre></td></tr>
-     {% if note.new_status %}
-       <tr style="background-color: #8C3A1C"><td>{{ note.author }}</td><td style="font-size: small;">Status changed to {{ note.get_new_status_display }}</td></tr>
+    <table class="notes">
+   {% for note in case.casenote_set.all %}{% spaceless %}
+     {% if note.note %}
+       <tr><td>{{ note.author }}</td><td><pre>{{ note.note }}</pre></td></tr>
      {% endif %}
+     {% if note.new_status %}
+       <tr class="new_status"><td>{{ note.author }}</td><td style="font-size: small;">Status changed to {{ note.get_new_status_display }}</td></tr>
+     {% endif %}{% endspaceless %}
    {% endfor %}
    </table>
    {% else %}

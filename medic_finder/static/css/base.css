@@ -4,19 +4,35 @@
 }
 
 .error {
-	background-color: #732f16;
+	background-color: #e82a33;
 }
 
+
 /*
-Color theme by lejazzman1 @ http://kiler.adobe.com/#themeID/1455626
-#a69958 #bfb084 #261201 #732f16 #8c3a1c
+Color theme by usha.datadrafters @ http://kuler.adobe.com/#themeID/1959507
+#7d7f77 #bbbfb2 #faffed #e82a33 #e3debc
 */
 
+.bgcolor1 { background-color: #7d7f77; }
+.bgcolor2 { background-color: #bbbfb2; }
+.bgcolor3 { background-color: #faffed; }
+.bgcolor4 { background-color: #e82a33; }
+.bgcolor5 { background-color: #e3debc; }
+
+/* Logo */
+
+#logo { position: relative; width: 200px; height: 80px; }
+#logo * { position: absolute; }
+#logo .title { color: #e82a33; font-size: 42px; top: 0; right: 0; font-weight: bold; }
+#logo .text { color: #7d7f77; font-size: 20px; right: 0; top: 30px; font-style: italic; line-height: 10px; }
+
+/* Page */
+
 body {
-	background-color: #261201;
-	font-size: 13px;
-	font-family: Arial, SunSans-Regular, Sans-Serif;
-	color:#a69958;  
+	background-color: #e3debc;
+	font-size: 14px;
+	font-family: Calibri, Tahoma, Verdana, Arial, SunSans-Regular, Sans-Serif;
+	color: black;  
 	padding:0 10px;
 	margin:0;
 }
@@ -31,24 +47,24 @@ h1 {
 	font-size: 14px;
 	text-transform:uppercase;
 	text-align: right;
-	color: #8c3a1c;
-	background-color: #732f16;
+	color: #faffed;
+	background-color: #e82a33;
 	padding:5px 15px;
 	margin:0;
 }
 
 a, a:visited, a:active { 
-	color: #8c3a1c;
+	color: #e82a33;
 	background-color:transparent;
 	text-decoration: none; 
 }
 
 a:hover {
-	color: #732f16;
+	color: #7d7f77;
 }
  
 pre { 
-	color: #dde1ac;
+	color: #7d7f77;
 	font-size: 13px;
 	background-color:transparent;
 	font-family: Courier, Monaco, Monospace;
@@ -58,8 +74,8 @@ pre {
 #content {
 	margin-left: 220px;
 	padding: 10px;
-	background-color:#dde1ac;
-	color: #261201;
+	background-color: #faffed;
+	color: #7d7f77;
 	overflow: auto;
 	font-size: medium;
 }
@@ -70,7 +86,7 @@ pre {
 	left: 10px;
 	padding:0;
 	margin:0;
-	background-color: #a69958;
+	background-color: #bbbfb2;
 	color: #261201;
 }
 
@@ -78,7 +94,7 @@ pre {
 	font-size:16px;
 	padding-top:10px;
 	text-transform:uppercase;
-	color: #8c3a1c;
+	color: #7d7f77;
 	background-color: transparent;
 }	
 
@@ -97,18 +113,19 @@ pre {
 
 
 fieldset {
-	border: 1px solid #a69958;
+	border: none; /*1px solid #e82a33;*/
 }
 
 fieldset legend {
 	font-variant: small-caps;
 }
 
-input, textarea {
-	background-color: #a69958;
+
+input, textarea, select {
+	background-color: #bbbfb2;
 	border: 1px solid #261201;
-	color: #261201;
 }
+
 
 .image {
 	float: left;
@@ -124,5 +141,25 @@ input, textarea {
 	padding: 0;
 	margin: 0;
 	width: 90%;
+}
+
+
+/* styles for specific templates */
+
+/* new */
+.detail_block dt {
+	background-color: #bbbfb2;
+}
+
+.detail_block .notes {
+	background-color: #bbbfb2;
+}
+
+.detail_block .notes pre {
+	color: black;
+}
+
+.detail_block .notes .new_status {
+	color: white;
 }
 

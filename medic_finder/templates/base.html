@@ -7,14 +7,23 @@
 
 	<title>{% block title %}DayZ ICRC{% endblock %}{% block sub_title %}{% endblock %}</title>
 	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/base.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}jqueryui-theme/jquery-ui-1.8.21.custom.css" media="screen" />
 	{% block extra_css %}{% endblock %}
 
 	<script type="text/javascript" encoding="urf-8" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script type="text/javascript" encoding="urf-8" src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+	<script type="text/javascript" encoding="urf-8" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+     $(function(){ $("input:submit, button").button(); });
+    </script>
 	{% block extra_js %}{% endblock %}
 </head>
 <body>
-	<p align="right"><img src="{{ STATIC_URL }}img/tr_logo.png" alt="DayZ ICRC" /></p>
+	<div align="right"><!--img src="{{ STATIC_URL }}img/tr_logo.png" alt="DayZ ICRC" /-->
+     <div id="logo">
+      <span class="title">DayZ ICRC</span>
+      <span class="text">International Committee of the Red Cross</span>
+     </div>
+    </div>
 	<h1>DayZ ICRC - {{ punchline|default:"Because a life expectancy of 30 minutes is just not enough." }}</h1>
 	<div id="menu">
 		{% block menu %}

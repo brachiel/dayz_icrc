@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load extra_filters %}
+
 {% block sub_title %}- Help Me!{% endblock %}
 
 {% block extra_js %}
@@ -10,21 +12,41 @@
 </script>
 <script type="text/javascript" encoding="utf-8" src="{{ STATIC_URL }}js/map.js"></script>
 <script type="text/javascript">
+	function fill_timetable_data() {
+		var ttdata = [];
+		
+		$("#time_table td.is_active").each(function(i,td) {
+			ttdata.push($(td).attr('data'));
+		});
+		
+		$("#id_timetable").val(ttdata.join(','));
+	}
+
 	$(document).ready(function(){
 		$("#new_case_form").validate({
 			rules: {
 				player_name: { required: true },
+				timezone: { required: true },
 				case_description: { required: true, minlength: 30, maxlength: 4000 },
 				latitude: { required: true },
-				longitude: { required: true }
+				longitude: { required: true },
+				/*timetable: { required: true }*/
 			},
 			submitHandler: function(form) {
-				form.submit_button.disabled = "disabled";
-
+				//form.submit_button.disabled = "disabled";
+				
+				fill_timetable_data();
+				//return false;
+				
+				$("#error_message_holder").empty();
+				
 				form.submit();
 			},
 
-			errorPlacement: function(){} // do not place error messages
+			errorPlacement: function(label, element){
+				$("#error_message_holder").show().append('<p>' + element.attr('name') + ": " + label.text() + '</p>');
+			}
+
 		});
 		
 		$("#map").on("markerset", function(e, lat, lon) {
@@ -33,6 +55,37 @@
 		  $("#id_latitude").val(lat);
 		  $("#id_longitude").val(lon);
 		});
+		
+		// jquery-ui
+		$("#accordion").accordion();
+		
+		$("#time_table th").click(function() {
+			var th = $(this);
+			var is_active = th.hasClass("is_active");
+			var num = th.attr('data-day');
+			
+			console.log(num);
+			
+			$("#time_table td:nth-child(" + num + ")").click();
+		});
+		
+		$("#time_table td").click(function() {
+			var td = $(this);
+			var is_active = td.hasClass("is_active");
+			
+			if (is_active) {
+				td.removeClass("is_active");
+				td.removeClass("bgcolor4");
+			} else {
+				td.addClass("is_active");
+				td.addClass("bgcolor4");
+			}
+		});
+		
+		$("#timetable_clear").click(function() {
+			$("#time_table td").removeClass("is_active").removeClass("bgcolor4");
+			return false;
+		});
 	});
 </script>
 {% endblock %}
@@ -40,38 +93,82 @@
 {% block extra_css %}
 <style type="text/css">
 	#id_case_description { 
-		width: 100%; height: 15em; 
+		width: 100%; height: 100%; 
 	}
+ 
+    #id_latitude, #id_longitude {
+        display: none;
+    }
 
-	#map { 
-		height: 30em; width: 100%; border: none; 
+	#map {
+		height: 100%; min-height: 40em; width: 100%; border: 1px solid #261201; 
 	}
  
 	#map .olControlMousePosition {
 		background: #000000; padding: 5px; margin: 0px;
 	}
-
+ 
+    #time_table {
+        border-collapse: collapse;
+        border: 1px solid black;
+        text-align: center;
+    }
+    
+    #time_table td, #time_table th {
+        border-left: 1px solid black;
+        cursor: pointer;
+        padding: 5px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p id="error_message_holder" class="ui-state-error"{% if not error_message %}style="display: none"{% endif %}><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><strong>{{ error_message }}</strong></p>
 
 <form id="new_case_form" action="/medic_finder/cases/new/" method="post">
 	<fieldset>
 	{% csrf_token %}
-	<dl>
-		<dt><label for="player_name">In-game survivor name.</label></dt>
-		<dd>{{ form.player_name }}<br />
-			Please spell your name correctly, as we will reuse your name in case you ever come back.</dd>
+    
+    <div id="accordion">
+      <h3><a href="#">Basic information</a></h3>
+      <div>
+       <dt><label for="player_name">In-game survivor name.</label></dt>
+       <dd>{{ form.player_name }}<br />
+        Please spell your name correctly, as we will reuse your name in case you ever come back.</dd>
+       <dt><label for="timezone">Your timezone.</label></dt>
+       <dd>{{ form.timezone }}<br />
+        <strong>Make sure this is correct</strong>; the data on the time table will be translated to the correct UTC times for you.</dd>
+      </div>
+      
+      <h3><a href="#">Case description</a></h3>
+      <div>
+ 		  {{ form.case_description }}
+      </div>
 
-		<dt><label for="case_description">Case description</label></dt>
-		<dd>{{ form.case_description }}</dd>
+      <h3><a href="#">Timetable</a></h3>
+      <div>Please tell us when you're generally able to play. Please be accurate! We use this information to pair you up with a medic. Enter the information in <strong>your time zone</strong>; we'll do the rest.
+       <table id="time_table">
+        <tr>
+        {% for day in weekdays %}<th data-day="{{ forloop.counter }}">{{ day }}</th>{% endfor %}
+        </tr>
+        {% for hour in hours %}
+         <tr{% cycle ' class="bgcolor2"' '' %}>{% spaceless %}
+         {% for day in weekdays %}
+          <td data="{{ day }}-{{ hour }}">{{ hour }}:00 - {{ hour|add:1|mod:24 }}:00</td>
+         {% endfor %}
+         </tr>
+        {% endspaceless %}{% endfor %}
+       </table>
+       <button id="timetable_clear">Clear</button>
+       {{ form.timetable }}
+      </div>
 
-		<dt><label for="map">Mark your position</label></dt>
-		<dd><div id="map"></div>
-            {{ form.latitude }}{{ form.longitude }}</dd>
-	</dl>
+      <h3><a href="#">Mark your position</a></h3>
+      <div>
+        <div id="map"></div>
+        {{ form.latitude }}{{ form.longitude }}
+      </div>
+    </div>
 	<input type="submit" name="submit_button" id="submit_button" value="Help me!" />
 	</fieldset>
 </form>

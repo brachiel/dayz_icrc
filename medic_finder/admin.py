@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django import forms
 from models import Player, Case, CaseNote
-import logging
+#import logging
 
-logger = logging.getLogger('console')
+#logger = logging.getLogger('console')
 
 class CaseAdminForm(forms.ModelForm):
     class Meta:
@@ -34,7 +34,6 @@ class OnlyMedicsFilter(admin.SimpleListFilter):
             return queryset
 
 class CaseAdmin(admin.ModelAdmin):
-    
     def get_medic_list(self, x):
         return ', '.join([p.name for p in x.medics.all()])
     get_medic_list.short_description = "Medics"
@@ -68,7 +67,7 @@ class CaseAdmin(admin.ModelAdmin):
             
             obj.status = new_status
             
-            new_note = CaseNote(case=obj, author=request.user.player, note=note, new_status = new_status)
+            new_note = CaseNote(case=obj, author=request.user.player, note=note, new_status=new_status)
             new_note.save()
             
             obj.save()
