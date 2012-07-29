@@ -10,6 +10,10 @@ import dayz_icrc.settings as settings
 import hashlib
 import os
 
+# Logging
+import logging
+logger = logging.getLogger("console")
+
 class Player(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	
@@ -53,6 +57,9 @@ class WeekTimeSpanManager(models.Manager):
 			
 			name = utctime.strftime('%a-%H') # Weekday, Hour
 
+		if len(name) == 5: # Hour is probably not given with leading zero
+			name = self.get_datetime_by_name(name).strftime('%a-%H')
+
 		try:
 			return self.get(name=name)
 		except WeekTimeSpan.DoesNotExist:
@@ -63,8 +70,11 @@ class WeekTimeSpanManager(models.Manager):
 		span_from = self.get_datetime_by_name(name, tz)
 		span_to = span_from + datetime.timedelta(hours=1)
 		
+		name = span_from.strftime('%a-%H') # to compensate in case the hour wasn't given with leading 0
+		
 		weektimespan = self.create(name=name, span_from=span_from, span_to=span_to)
 		weektimespan.save()
+		logger.debug("new weektimespan: %s %s %s" % (weektimespan, name, tz))
 		return weektimespan
 
 class WeekTimeSpan(models.Model): # always in UTC

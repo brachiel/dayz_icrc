@@ -9,6 +9,10 @@ import random
 
 import pytz
 
+# Logging
+import logging
+logger = logging.getLogger("console")
+
 ## Other helper functions
 def get_punchline():
 	punchlines = ["Because a life expectancy of 50 minutes is just not enough.",
@@ -60,9 +64,11 @@ def new_case_form(request):
 				weektimespans = []
 				for name in timetable.split(','):
 					weektimespans.append(WeekTimeSpan.objects.get_or_create_by_name(name, timezone))
+					logger.debug(weektimespans)
 				
 				player, created = Player.objects.get_or_create(name=player_name)
 				
+				logger.debug(weektimespans)
 				case = Case(patient=player, latitude=latitude, longitude=longitude, timezone=timezone_id)
 				case.save()
 				case.meeting_times = weektimespans

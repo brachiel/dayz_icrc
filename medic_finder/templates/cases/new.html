@@ -125,7 +125,7 @@
 {% block content %}
 <p id="error_message_holder" class="ui-state-error"{% if not error_message %}style="display: none"{% endif %}><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><strong>{{ error_message }}</strong></p>
 
-<form id="new_case_form" action="/medic_finder/cases/new/" method="post">
+<form id="new_case_form" action="cases/new/" method="post">
 	<fieldset>
 	{% csrf_token %}
     
@@ -154,7 +154,7 @@
         {% for hour in hours %}
          <tr{% cycle ' class="bgcolor2"' '' %}>{% spaceless %}
          {% for day in weekdays %}
-          <td data="{{ day }}-{{ hour }}">{{ hour }}:00 - {{ hour|add:1|mod:24 }}:00</td>
+          <td data="{{ day }}-{% if hour < 10 %}0{% endif%}{{ hour }}">{{ hour }}:00 - {{ hour|add:1|mod:24 }}:00</td>
          {% endfor %}
          </tr>
         {% endspaceless %}{% endfor %}
