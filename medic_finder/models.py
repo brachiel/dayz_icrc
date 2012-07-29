@@ -63,7 +63,9 @@ class WeekTimeSpanManager(models.Manager):
 		span_from = self.get_datetime_by_name(name, tz)
 		span_to = span_from + datetime.timedelta(hours=1)
 		
-		return self.create(name=name, span_from=span_from, span_to=span_to).save()
+		weektimespan = self.create(name=name, span_from=span_from, span_to=span_to)
+		weektimespan.save()
+		return weektimespan
 
 class WeekTimeSpan(models.Model): # always in UTC
 	name = models.CharField(max_length=40, blank=False, unique=True, editable=False)
@@ -117,6 +119,11 @@ class Case(models.Model):
 		
 		if not self.id_string and self.patient and not self.pk:
 			self.id_string = hashlib.sha1(self.patient.name + str(self.created) + settings.SECRET_KEY + str(os.urandom(6)).encode('base64')).hexdigest()
+	
+	class Meta:
+		permissions = (
+			("edit_all_cases", "Can edit all cases, regardless if assigned or not."),
+		)
 
 class CaseNote(models.Model):
 	author = models.ForeignKey(Player)

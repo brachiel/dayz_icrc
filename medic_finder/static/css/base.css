@@ -163,3 +163,11 @@ input, textarea, select {
 	color: white;
 }
 
+
+/* new note */
+#new_note_form #id_note {
+	width: 100%;
+	height: 5em;
+}
+	
+}

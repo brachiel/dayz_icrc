@@ -29,10 +29,11 @@
 		{% block menu %}
 		<h2><a href="./">DayZ ICRC Interface</a></h2>
 
-		{% if username %}<p style="font-size: small">You're logged in as {{ username }}.</p>{% endif %}
+		{% if user.username %}<p style="font-size: small">You're logged in as {{ user.username }}.</p>{% endif %}
 
 		<ul><li><a href="cases/new/">Ask for help</a>.</li>
-			{% if username %}<li><a href="logout/">Logout</a>.</li>{% endif %}
+			{% if user.username %}<li><a href="/admin/">Medic tools</a>.</li>
+            <li><a href="logout/">Logout</a>.</li>{% endif %}
 		</ul>
 		{% endblock menu %}
 		{% block extra_menu %}{% endblock extra_menu %}

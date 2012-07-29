@@ -63,8 +63,8 @@
   <dt>Created</dt><dd>{{ case.created }}</dd>
   <dt>Last Modified</dt><dd>{{ case.last_updated|default:"&nbsp;" }}</dd>
   <dt>Timezone</dt><dd>{{ case.get_timezone_display }}</dd>
-  <dt>Available hours</dt><dd>
-   <ul>{% for time in case.meeting_times.all %}
+  <dt>Available hours (UTC)</dt><dd>
+   <ul>{% for time in case.meeting_times.all|dictsort:"span_from" %}
     {% ifchanged %}{{ time.span_from|date:"D" }}: {% endifchanged %}{{ time.span_from|date:"G" }} 
    {% endfor %}</ul>
   <dt>Position</dt><dd><div id="map_container"><div id="map"></div></div>
@@ -85,5 +85,10 @@
    None, yet.
    {% endif %}
   </dd>
+  <dt>New Note</dt>
+  <dd><form id="new_note_form" action="cases/show/{{ case.id_string }}/new_note/" method="POST">
+        {% csrf_token %}
+        <textarea name="note" id="id_note"></textarea><br/><input type="submit" value="Make note" />
+      </form></dd>
  </dl>
 {% endblock %}

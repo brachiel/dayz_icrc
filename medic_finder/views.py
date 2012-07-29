@@ -11,10 +11,12 @@ import pytz
 
 ## Other helper functions
 def get_punchline():
-	punchlines = ["Because a life expectancy of 30 minutes is just not enough.",
+	punchlines = ["Because a life expectancy of 50 minutes is just not enough.",
 			  "Fixing broken bones with morphine since Day Z.",
-			  "Because medical supplies are not just lying around in random houses.",
-			  "Call us, and we'll help you... maybe... if we don't get shot... or get eaten by zombies..."]
+			  "Because medical supplies do not just lie around in random houses.",
+			  "Call us, and we'll help you... maybe... if we don't get shot... or get eaten by zombies...",
+			  "The only friendlies in Cherno.",
+			  "Please don't shoot us."]
 	return random.choice(punchlines)
 
 
@@ -93,6 +95,34 @@ def new_case_form(request):
 								  'weekdays': ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 								  'hours': range(24) })
 	return HttpResponse(t.render(c))
+
+
+# User makes a new case note
+class CaseNoteForm(forms.Form):
+	note = forms.CharField(max_length=4000, required=True, label="New Case Note")
+	note.widget = forms.Textarea()
+
+def new_case_note(request, case_string=''):
+	try:
+		case = Case.objects.get(id_string=case_string)
+	except Case.DoesNotExist:
+		return HttpResponse("Couldn't find case. Aborting.")
+	
+	form = CaseNoteForm(request.POST)
+	
+	if form.is_valid():
+		note = form.cleaned_data['note']
+		
+		# Create new case note
+		if request.user.is_authenticated():
+			author = request.user.player
+		else:
+			author = case.patient
+		
+		case_note = CaseNote(case=case, author=author, note=note)
+		case_note.save()
+
+	return HttpResponseRedirect('../')
 
 
 def logout(request):
