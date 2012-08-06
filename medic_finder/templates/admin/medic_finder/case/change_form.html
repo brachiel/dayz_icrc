@@ -1,0 +1,24 @@
+{% extends "admin/change_form.html" %}
+
+{% block form_top %}
+{# <a href="{% url 'medic_finder.views.new_case_note' case_string=original.id_string %}/../">Show full case details</a> #}
+<a href="/cases/show/{{ original.id_string }}/"><h2>Show full case details</h2></a>
+{% endblock %}
+
+{% block after_field_sets %}
+<fieldset class="module aligned ">
+ <h2>Case Notes</h2>
+ <div class="form-row field-new_status">
+  <table class="notes">
+   {% for note in original.casenote_set.all %}{% spaceless %}
+     {% if note.note %}
+       <tr><td>{{ note.author }}</td><td><pre>{{ note.note }}</pre></td></tr>
+     {% endif %}
+     {% if note.new_status %}
+       <tr class="new_status"><td>{{ note.author }}</td><td style="font-size: small;">Status changed to {{ note.get_new_status_display }}</td></tr>
+      {% endif %}{% endspaceless %}
+    {% endfor %}
+   </table>
+ </div>
+</fieldset>
+{% endblock %}

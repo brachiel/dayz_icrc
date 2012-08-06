@@ -31,7 +31,7 @@ class NewCaseForm(forms.Form):
 	case_description = forms.CharField(max_length=4000, min_length=30, required=True, label="Case description.")
 	case_description.widget = forms.Textarea()
 	case_description.initial = """Describe your problem.
-* DO NOT FORGET to include where you are.
+* DO NOT FORGET to include how you can be contacted.
 * DO NOT FORGET to include when you are online / when you need help."""
 
 	latitude = forms.IntegerField(required=True, min_value=-13669, max_value=0)
