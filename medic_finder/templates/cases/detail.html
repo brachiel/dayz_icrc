@@ -7,9 +7,10 @@
 </script>
 <script type="text/javascript" encoding="utf-8" src="{{ STATIC_URL }}js/map.js"></script>
 <script type="text/javascript">
+ map.markerEditable = false;
 
  $(document).ready(function() {
-  vectorLayer.setMedicMarker({{ case.longitude }}, {{ case.latitude }}); 	
+  map.setMedicMarker({{ case.longitude }}, {{ case.latitude }});
  });
 
 </script>

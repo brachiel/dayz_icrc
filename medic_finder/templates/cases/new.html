@@ -28,8 +28,8 @@
 				player_name: { required: true },
 				timezone: { required: true },
 				case_description: { required: true, minlength: 30, maxlength: 4000 },
-				latitude: { required: true },
 				longitude: { required: true },
+				latitude: { required: true },
 				/*timetable: { required: true }*/
 			},
 			submitHandler: function(form) {
@@ -44,16 +44,15 @@
 			},
 
 			errorPlacement: function(label, element){
-				$("#error_message_holder").show().append('<p>' + element.attr('name') + ": " + label.text() + '</p>');
+				$("#error_message_holder").show();
+				$("#error_message_holder > strong").html(element.attr('name') + ": " + label.text());
 			}
 
 		});
 		
-		$("#map").on("markerset", function(e, lat, lon) {
-		  vectorLayer.setMedicMarker(lon, lat);
-			  
-		  $("#id_latitude").val(lat);
-		  $("#id_longitude").val(lon);
+		$("#map").on("markerset", function(e, lon, lat) {
+			$("#id_longitude").val(lon);
+			$("#id_latitude").val(lat);
 		});
 		
 		// jquery-ui
@@ -95,7 +94,7 @@
 	#id_case_description { 
 		width: 100%; height: 100%; 
 	}
- 
+
     #id_latitude, #id_longitude {
         display: none;
     }

@@ -1,5 +1,9 @@
 TODO
 Things that need to be done but are not high priority
 * Make the position setter map a widget
+* Make it possible for multiple markers to be displayed on the map widget (not in the model).
+* Make it possible for both the medic and the patient to edit the position on the map.
 * Make the play time chooser a widget
+* Improve/redo the validation of the submission form.
+* Figure out how exactly assignment of medics should work.
 

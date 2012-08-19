@@ -20,7 +20,7 @@ class CaseAdminForm(forms.ModelForm):
     note = forms.CharField(max_length=4000, required=False, label="New Case Note")
     note.widget = forms.Textarea()
     
-    drop_case = forms.BooleanField(required=False, label="Drop this case. This will remove yourself from the case, even if you're the last medic.")
+    drop_case = forms.BooleanField(required=False, label="Drop this case. This will remove yourself from the case, even if you're the last medic. For this, make sure the above medic list is completely empty, first.")
 
 class Assignment(admin.SimpleListFilter):
     title = "Assignment"
@@ -105,6 +105,9 @@ class CaseAdmin(admin.ModelAdmin):
                         new_note.save()
                     
                     drop_note = "The case was dropped by the medic. It was reopened for assignment."
+                    for x,y in form.cleaned_data.items():
+                        drop_note += "%s: %s" % (x,y)
+                    drop_note += str(form.cleaned_data)
                     new_note = CaseNote(case=obj, author=request.user.player, note=drop_note, new_status=0)
                     new_note.save()
                     
@@ -112,7 +115,7 @@ class CaseAdmin(admin.ModelAdmin):
                     
                     obj.save()
                     return
-
+            
             if not (new_status is not None or len(note) > 0):
                 obj.save()
                 return
